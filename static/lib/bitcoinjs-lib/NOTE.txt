@@ -1,0 +1,2 @@
+bitcoinjs-lib was cloned from blockchain.info's branch on 2013-10-27
+other js files cloned from brainwallet.org or carbonwallet's branch on 2013-10-27

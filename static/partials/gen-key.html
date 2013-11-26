@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="span8">
+    <div class="leftBody">
+        
+          <form class="well form-horizontal" action="register" method="POST" enctype="multipart/form-data">
+              <fieldset>
+                <div style="display:none"><input type="hidden" name="csrfmiddlewaretoken" value="d5f042f0bd1d44c44c45f0171e397938"></div>
+                <legend>Backup Key Mnemonic</legend>
+                <p>The following 12 words will generate your backup key.
+				<p>Anyone who possesses both the primary and backup private keys can spend your funds, so you should <b>write this mnemonic down somewhere secure</b>.
+                
+				<p>
+                <input id="generated" ng-model="mnemonic" class="input-xxlarge" type="text">
+                <button class="btn" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_mnemonic()"><i class="icon-repeat"></i></button>
+				<button class="btn btn-primary" type="button" ng-click="generate_key()">Generate Key</button>
+                </p>
+
+				<div class="progress progress-striped" style="margin-top: 10px;" ng-show="show_progress">
+				  <div class="bar" id="seed-progress" style="width: 0%;"></div>
+				</div>
+				
+				<div ng-show="key">
+					<p>This mnemonic generates the following public key:
+					<p><input ng-model="key.publicKey" readonly="" class="input-xxlarge" type="text">
+					<p>Make a note of this key to complete your TrustedCoin wallet.  You can email it to yourself -- it's public so it doesn't matter if other people see it.
+					<p>To recap,
+					<ol>
+					  <li>Write your mnemonic down and store it securely
+					  <li>Write down or email yourself the public key
+					  <li>Return to original computer, and complete setting up TrustedCoin wallet
+					</ol>
+				</div>
+				
+              </fieldset>
+          </form>    
+        
+    </div>
+  </div>
+  
+</div>

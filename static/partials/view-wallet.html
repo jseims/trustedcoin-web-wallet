@@ -1,0 +1,104 @@
+<script>
+$(function() {
+    $('.expandable-header').click(function() {
+        $(this).next('.expandable-body').toggle();
+        return false;
+    });
+    $('.expandable-body').hide();
+});
+</script>
+
+<div class="row" ng-show="get_error"> 
+	<div class="alert alert-error"> 
+	  <strong>Error!</strong> {{get_error}}
+	</div> 
+</div>
+
+<div ng-show="wallet.address">
+
+	<div class="row" style="margin-bottom: 10px;">
+	  <div class="span8">
+		<h1>Your Wallet</h1>
+	  </div>
+	  <div class="span4">
+		<h1 style="float: right; margin-right: 0px;" ng-show="balance">{{balance}} Satoshis</h1>
+	  </div>  
+	</div>
+
+	<div class="row">
+	  <div class="span6">
+		<h2><a href="https://blockchain.info/address/{{address}}" target='new' class="btn">View Transactions <i class="icon-share"></i></a></h2>
+
+		<div style="text-align:center;padding-top:10px;padding-bottom:10px;overflow:hidden" class="no-watch-only">
+			<div id="my-primary-addres-qr-code" style="vertical-align:top;margin-right:10px;"><qrcode class="pull-left" size="125" data="{{address}}"></qrcode></div>
+
+			<div style="display:inline-block;vertical-align:middle;margin-top:5px;" class="well">
+				<small>Your Bitcoin Address is:</small>
+
+				<h3>{{address}}</h3>
+
+				<small>You can receive payments at this address.</small>
+			</div>
+		</div>
+		
+		
+			<div>
+				<a class="expandable-header">More Account Info</a> 
+			
+				<div class="expandable-body" style="display: block; margin-top: 10px;">
+					<p>Primary Public Key: {{wallet.primary_key}}
+					<p>Secondary Public Key: {{wallet.secondary_key}}
+					<p>TrustedCoin Public Key: {{wallet.trustedcoin_pubkey}}
+					<p>Address Script: {{wallet.script}}
+					<p>TrustedCoin Cosigning Fee: {{wallet.trustedcoin_fee}} Satoshis
+				</div>        
+			</div>
+			
+	  </div>
+	  
+	  <div class="span6">
+		  <form class="well form-horizontal" action="register" method="POST" enctype="multipart/form-data">
+			  <fieldset>
+				<legend>Send Bitcoins</legend>
+				
+					<div class="alert alert-error" ng-show="send_error"> 
+					  <strong>Error!</strong> {{send_error}}
+					</div> 
+				  
+				  <div class="control-group">
+					<label class="control-label" for="id_email">To: </label>
+					<div class="controls">
+					  <input type="text" class="span4" ng-model="to_address" placeholder="Bitcoin Address">
+					</div>
+				  </div>
+				  
+				  <div class="control-group">
+					<label class="control-label" for="id_email">Amount:</label>
+					<div class="controls">
+					  <input type="text" class="span4" ng-model="to_amount" placeholder="Satoshis">
+					</div>
+				  </div>
+				  
+				
+				  <div class="form-actions" ng-hide="prompt_mnemonic">
+					<a ng-click="send_btc()" class="btn btn-primary">Send</a>
+				  </div>
+			  </fieldset>
+		  </form>
+		  <form class="well form-horizontal" action="register" method="POST" enctype="multipart/form-data" ng-show="prompt_mnemonic">
+			  <fieldset>
+				<legend>To complete this transaction, please enter your 12-word primary mnemonic</legend>
+					<input ng-model="mnemonic" class="input-xxlarge" type="text">
+					<div class="progress progress-striped" style="margin-top: 10px;" ng-show="show_progress">
+					  <div class="bar" id="seed-progress" style="width: 0%;"></div>
+					</div>					
+					<div class="form-actions">
+						<a ng-click="sign_transaction()" class="btn btn-primary">Send</a>
+					</div>
+			  </fieldset>
+		  </form>
+		  
+	  </div>
+	  
+	</div>
+</div>

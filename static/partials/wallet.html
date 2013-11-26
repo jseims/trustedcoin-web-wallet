@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="span12" style="text-align: center;">
+	<h1>A Secure Web Wallet Built on TrustedCoin</h1>
+	<form id="wallet-open">
+	  <input id="password" placeholder="Enter your Bitcoin Address" value="" class="input-xlarge" type="text" ng-model="address">
+	  <a class="btn disabled" ng-hide="address">Open Wallet</a> <a href="#/wallet/{{address}}" class="btn btn-primary" ng-show="address">Open Wallet</a>
+	  <a href="#/create-wallet" class="btn btn-success">Create a new wallet</a>
+	</form>
+  </div>
+</div>  
+
+<div class="row">
+	<div class="span4">
+	  <h4><i class="icon-ok-sign"></i> You are still in control of your coins.</h4>
+	  <p>TrustedCoin wallet secures your funds with a 2-of-3 multisig.  You hold two keys, so we can't move your funds without your permission.
+	  </p>
+	</div>
+	<div class="span4">
+	  <h4><i class="icon-ok-sign"></i> We delay transactions by 24 hours.</h4>
+	  <p>Any time someone spends funds from your account, we send you an email and SMS with a link to cancel the transaction within 24 hours.</p> 
+
+	</div>
+	<div class="span4">
+	  <h4><i class="icon-ok-sign"></i> Your coins are safe even if your computer is not.</h4>
+	  <p>You can use this wallet without even entering two of your private keys on the same computer.</p>
+	  <p>That way, even if you have a keylogger running on your machine, no one can steal you coins without giving you 24 hours to reverse.</p>
+	  </p>
+	</div>
+</div>
