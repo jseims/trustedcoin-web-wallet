@@ -21,7 +21,7 @@ $(function() {
 		<h1>Your Wallet</h1>
 	  </div>
 	  <div class="span4">
-		<h1 style="float: right; margin-right: 0px;" ng-show="balance">{{balance}} Satoshis</h1>
+		<h1 style="float: right; margin-right: 0px;" ng-show="balance">{{balance}} BTC</h1>
 	  </div>  
 	</div>
 
@@ -75,26 +75,54 @@ $(function() {
 				  <div class="control-group">
 					<label class="control-label" for="id_email">Amount:</label>
 					<div class="controls">
-					  <input type="text" class="span4" ng-model="to_amount" placeholder="Satoshis">
+					  <input type="text" class="span4" ng-model="to_amount" placeholder="BTC">
 					</div>
 				  </div>
 				  
 				
-				  <div class="form-actions" ng-hide="prompt_mnemonic">
+				  <div class="form-actions" ng-hide="prompt_sign">
 					<a ng-click="send_btc()" class="btn btn-primary">Send</a>
 				  </div>
 			  </fieldset>
 		  </form>
-		  <form class="well form-horizontal" action="register" method="POST" enctype="multipart/form-data" ng-show="prompt_mnemonic">
+		  <form class="well form-horizontal" action="register" method="POST" enctype="multipart/form-data" ng-show="prompt_sign || 1">
 			  <fieldset>
-				<legend>To complete this transaction, please enter your 12-word primary mnemonic</legend>
-					<input ng-model="mnemonic" class="input-xxlarge" type="text">
-					<div class="progress progress-striped" style="margin-top: 10px;" ng-show="show_progress">
-					  <div class="bar" id="seed-progress" style="width: 0%;"></div>
-					</div>					
-					<div class="form-actions">
-						<a ng-click="sign_transaction()" class="btn btn-primary">Send</a>
+				<div ng-hide="encrypted_mnemonic">
+					<legend>To complete this transaction, please enter your 12-word primary mnemonic</legend>
+					<p><input ng-model="mnemonic" class="input-xxlarge" type="text">
+					<p><a ng-click="save_mnemonic=true">Save Mnemonic </a>
+					<div ng-show="save_mnemonic">
+						<p>For convenience, you can save a local copy of your mnemonic encrypted with a simpler password.
+						
+						  <div class="control-group">
+							<label class="control-label" for="id_email">Password: </label>
+							<div class="controls">
+								<input type="password" class="span2" ng-model="password">
+								<a ng-click="encrypt_mnemonic()" class="btn btn-primary">Save</a>
+							</div>
+						  </div>
+						
 					</div>
+				</div>
+				<div ng-show="encrypted_mnemonic">
+					<legend>To complete this transaction, please enter your password</legend>
+						  <div class="control-group">
+							<label class="control-label" for="id_email">Password: </label>
+							<div class="controls">
+								<input type="password" class="span2" ng-model="password">
+								<a ng-click="encrypt_mnemonic()" class="btn btn-primary">Save</a>
+							</div>
+						  </div>
+					<p><a ng-click="remove_local_mnemonic()">Remove local copy of mnemonic </a>
+				</div>
+				
+				<div class="progress progress-striped" style="margin-top: 10px;" ng-show="show_progress">
+				  <div class="bar" id="seed-progress" style="width: 0%;"></div>
+				</div>					
+				<div class="form-actions">
+					<a ng-click="sign_transaction()" class="btn btn-primary">Send</a>
+					<a ng-click="prompt_sign=false" class="btn">Cancel</a>
+				</div>
 			  </fieldset>
 		  </form>
 		  
