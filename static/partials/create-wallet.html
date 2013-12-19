@@ -1,108 +1,110 @@
-<div class="row">
-  <div class="span8">
-    <div class="leftBody">
-        
-          <form class="well form-horizontal" action="register" method="POST" enctype="multipart/form-data">
-              <fieldset>
-			  
-				<div ng-show="state=='choose_backup'">
-					<legend>Signup &mdash; Step 1 of 4: Backup Key Mnemonic</legend>
-					<p>The following 12 words will generate your backup key.  You should only need this key in an emergency, such as if TrustedCoin disappears.
-					<p>We do not store this mnemonic, so you <b>must write it down</b>.
-					
-					<p>
-					<input id="generated" readonly="" ng-model="backup_mnemonic" class="input-xxlarge" type="text">
-					<button class="btn" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_backup_mnemonic()"><i class="icon-repeat"></i></button>
-					</p>
-					
-					<p>If you want extra security (because you're concerned the computer you're currently on may be compromised), you can <a ng-click="state='enter_backup'">create this backup mnemonic on another computer</a>.
-					
-					<div class="form-actions" ng-hide="show_progress">
-					  <a ng-click="generate_backup_key()" class="btn btn-primary">OK, I wrote it down</a>
-					</div>
-					  
-				</div>
-				
-				<div ng-show="state=='enter_backup'">
-					<legend>Create Backup Key on another Computer</legend>
-					<p>For better security, you can generate this backup key on a different computer.  There's a chance your current computer has malware that logs your keystrokes.  By generating a secondary key on another device, you drastically an attacker's ability to acquire both keys.
-					<p>So <b>go to another computer</b> and visit:
-					<p><a href="https://api.trustedcoin.com/#/gen-key">https://api.trustedcoin.com/#/gen-key</a>
-					<p>Follow the instructions and enter the public key you generate:
-					<p><input placeholder="Enter public key" class="input-xxlarge" type="text" ng-model="secondary_public_key"> 
-					   <a class="btn disabled" ng-hide="secondary_public_key">Next</a> <a ng-click="state='choose_primary'" class="btn btn-primary" ng-show="secondary_public_key">Next</a>
-				</div>
-				
-				<div ng-show="state=='choose_primary'">
-					<legend>Signup &mdash; Step 2 of 4: Primary Key Mnemonic</legend>
-					<p>The following 12 words will generate your primary key.
-					<p>You will need to enter these words every time you spend coins.
-					<p>We do not store this mnemonic, so you <b>must write it down</b>.
-					
-					<p>
-					<input id="generated" readonly="" ng-model="primary_mnemonic" class="input-xxlarge" type="text">
-					<button class="btn" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_primary_mnemonic()"><i class="icon-repeat"></i></button>
-					</p>
-					
-					<div class="form-actions" ng-hide="show_progress">
-					  <a ng-click="generate_primary_key()" class="btn btn-primary">OK, I wrote it down</a>
-					</div>
-				</div>
-				
-				<div ng-show="state=='verify_primary'">
-					<legend>Signup &mdash; Step 3 of 4: Verify Primary Mnemonic</legend>
-					<p>Let's check that you wrote your primary mnemonic down correctly.
-					
-					<p>
-					<input id="generated" ng-model="verify_mnemonic" class="input-xxlarge" type="text">
-					<button class="btn btn-primary" type="button" ng-click="verify_primary_mnemonic()">Verify Mnemonic</button>
-					  
-					<div ng-show="not_verified">
-						<p>No, that's wrong.
-						<p>You can try again, or <a ng-click="state='choose_primary'">create a new primary mnemonic</a>
-					</div>
-				</div>
-				
-				<div ng-show="state=='enter_contacts'">
-					<div style="display:none"><input type="hidden" name="csrfmiddlewaretoken" value="d5f042f0bd1d44c44c45f0171e397938"></div>
-					<legend>Signup &mdash; Step 4 of 4: Contact Info</legend>
-					<p>Every time someone attempts to spend funds from this wallet, we'll notify you and give you 24 hours to cancel the transaction.
-					<p>Please enter the email address and phone number for SMS messages you'd like to us to use.
-					
-					<div class="alert alert-error" ng-show="error"> 
-					  <strong>Error!</strong> {{error}}
-					</div> 
-					
-					  <div class="control-group">
-						<label class="control-label" for="id_email">Your Email<br><span class="text-error">{{errors.email}}</span></label>
-						<div class="controls">
-						  <input type="text" class="span4" ng-model="email">
-						</div>
-					  </div>
-					  
-					  <div class="control-group">
-						<label class="control-label" for="id_email">Your Phone</label>
-						<div class="controls">
-						  <input type="text" class="span4" ng-model="phone">
-						</div>
-					  </div>
-					  
-					
-					  <div class="form-actions">
-						<a ng-click="create_wallet()" class="btn btn-primary">Create Wallet</a>
-					  </div>
-
-				</div>
-				
-				
-				<div class="progress progress-striped" style="margin-top: 10px;" ng-show="show_progress">
-				  <div class="bar" id="seed-progress" style="width: 0%;"></div>
-				</div>
+<div class="page-content container">
+	<div class="row">
+	  <div class="span8">
+		<div class="leftBody">
+			
+			  <form class="well form-horizontal" action="register" method="POST" enctype="multipart/form-data">
+				  <fieldset>
 				  
-              </fieldset>
-          </form>    
-        
-    </div>
-  </div>
-  
-</div>
+					<div ng-show="state=='choose_backup'">
+						<legend>Signup &mdash; Step 1 of 4: Backup Key Mnemonic</legend>
+						<p>The following 12 words will generate your backup key.  You should only need this key in an emergency, such as if TrustedCoin disappears.
+						<p>We do not store this mnemonic, so you <b>must write it down</b>.
+						
+						<p>
+						<input id="generated" readonly="" ng-model="backup_mnemonic" class="input-xxlarge" type="text">
+						<button class="btn" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_backup_mnemonic()"><i class="icon-repeat"></i></button>
+						</p>
+						
+						<p>If you want extra security (because you're concerned the computer you're currently on may be compromised), you can <a ng-click="state='enter_backup'">create this backup mnemonic on another computer</a>.
+						
+						<div class="form-actions" ng-hide="show_progress">
+						  <a ng-click="generate_backup_key()" class="btn btn-primary">OK, I wrote it down</a>
+						</div>
+						  
+					</div>
+					
+					<div ng-show="state=='enter_backup'">
+						<legend>Create Backup Key on another Computer</legend>
+						<p>For better security, you can generate this backup key on a different computer.  There's a chance your current computer has malware that logs your keystrokes.  By generating a secondary key on another device, you drastically an attacker's ability to acquire both keys.
+						<p>So <b>go to another computer</b> and visit:
+						<p><a href="https://api.trustedcoin.com/#/gen-key">https://api.trustedcoin.com/#/gen-key</a>
+						<p>Follow the instructions and enter the public key you generate:
+						<p><input placeholder="Enter public key" class="input-xxlarge" type="text" ng-model="secondary_public_key"> 
+						   <a class="btn disabled" ng-hide="secondary_public_key">Next</a> <a ng-click="state='choose_primary'" class="btn btn-primary" ng-show="secondary_public_key">Next</a>
+					</div>
+					
+					<div ng-show="state=='choose_primary'">
+						<legend>Signup &mdash; Step 2 of 4: Primary Key Mnemonic</legend>
+						<p>The following 12 words will generate your primary key.
+						<p>You will need to enter these words every time you spend coins.
+						<p>We do not store this mnemonic, so you <b>must write it down</b>.
+						
+						<p>
+						<input id="generated" readonly="" ng-model="primary_mnemonic" class="input-xxlarge" type="text">
+						<button class="btn" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_primary_mnemonic()"><i class="icon-repeat"></i></button>
+						</p>
+						
+						<div class="form-actions" ng-hide="show_progress">
+						  <a ng-click="generate_primary_key()" class="btn btn-primary">OK, I wrote it down</a>
+						</div>
+					</div>
+					
+					<div ng-show="state=='verify_primary'">
+						<legend>Signup &mdash; Step 3 of 4: Verify Primary Mnemonic</legend>
+						<p>Let's check that you wrote your primary mnemonic down correctly.
+						
+						<p>
+						<input id="generated" ng-model="verify_mnemonic" class="input-xxlarge" type="text">
+						<button class="btn btn-primary" type="button" ng-click="verify_primary_mnemonic()">Verify Mnemonic</button>
+						  
+						<div ng-show="not_verified">
+							<p>No, that's wrong.
+							<p>You can try again, or <a ng-click="state='choose_primary'">create a new primary mnemonic</a>
+						</div>
+					</div>
+					
+					<div ng-show="state=='enter_contacts'">
+						<div style="display:none"><input type="hidden" name="csrfmiddlewaretoken" value="d5f042f0bd1d44c44c45f0171e397938"></div>
+						<legend>Signup &mdash; Step 4 of 4: Contact Info</legend>
+						<p>Every time someone attempts to spend funds from this wallet, we'll notify you and give you 24 hours to cancel the transaction.
+						<p>Please enter the email address and phone number for SMS messages you'd like to us to use.
+						
+						<div class="alert alert-error" ng-show="error"> 
+						  <strong>Error!</strong> {{error}}
+						</div> 
+						
+						  <div class="control-group">
+							<label class="control-label" for="id_email">Your Email<br><span class="text-error">{{errors.email}}</span></label>
+							<div class="controls">
+							  <input type="text" class="span4" ng-model="email">
+							</div>
+						  </div>
+						  
+						  <div class="control-group">
+							<label class="control-label" for="id_email">Your Phone</label>
+							<div class="controls">
+							  <input type="text" class="span4" ng-model="phone">
+							</div>
+						  </div>
+						  
+						
+						  <div class="form-actions">
+							<a ng-click="create_wallet()" class="btn btn-primary">Create Wallet</a>
+						  </div>
+
+					</div>
+					
+					
+					<div class="progress progress-striped" style="margin-top: 10px;" ng-show="show_progress">
+					  <div class="bar" id="seed-progress" style="width: 0%;"></div>
+					</div>
+					  
+				  </fieldset>
+			  </form>    
+			
+		</div>
+	  </div>
+	  
+	</div>
+</div>	
