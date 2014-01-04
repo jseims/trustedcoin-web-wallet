@@ -12,12 +12,12 @@
 					
 					<p>
 					<input id="generated" ng-model="mnemonic" class="input-xxlarge" type="text">
-					<button class="btn" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_mnemonic()"><i class="icon-repeat"></i></button>
+					<button class="btn" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_mnemonic()"><span class="glyphicon glyphicon-repeat"></span></button>
 					<button class="btn btn-primary" type="button" ng-click="generate_key()">Generate Key</button>
 					</p>
 
-					<div class="progress progress-striped" style="margin-top: 10px;" ng-show="show_progress">
-					  <div class="bar" id="seed-progress" style="width: 0%;"></div>
+					<div class="progress progress-striped" style="margin-top: 10px; width: 100%;" ng-show="show_progress">
+					  <div class="progress-bar progress-bar-success" id="seed-progress" role="progressbar" style="width: 0%;"></div>
 					</div>
 					
 					<div ng-show="key">

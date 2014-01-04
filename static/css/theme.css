@@ -18,6 +18,7 @@ h1,h2,h3,h4,h5,h6{
 .blue{color:#13a2d4;}
 .bg-gray{background:#f4f4f4;}
 
+.center{text-align:center;}
 a{
 	text-shadow:none;
 	color:#13a2d4;
@@ -92,21 +93,21 @@ a{
 hr {
 	margin:40px 0; 
 	padding:0;
-	border-top: 1px solid #ddd; 
-	
+	border-top: 1px solid #ddd; 	
 }
-
 
  .form-horizontal input,
  .form-horizontal textarea{
-  border:none;
+ 
   box-shadow:none;
 }
 
-.contact .field{
+input{
 	border: 1px solid #ddd !important;
 	border-radius: 4px;
-  box-shadow:none;
+  	box-shadow:none;
+  	padding:5px 10px;
+  	margin:20px;
 }
 footer{
 	background:#fff;
@@ -250,10 +251,6 @@ footer p{
   border-color: #13a2d4;
 }
 
-.btn{
-	width:100%;
-}
-
 .contact {
 	border-top:solid 1px #ddd;
 	border-bottom:solid 1px #ddd;
@@ -267,6 +264,8 @@ footer p{
 	width:100%;
 	margin:30px auto;
 }
+
+
 
 /* =============== media queries 480px ===============*/
 @media (min-width: 480px){
@@ -460,9 +459,6 @@ footer p{
 	.contact h2{
 		font-size:30px;
 	}
-	.btn{
-		float:right;
-	}
 
 }
 
@@ -510,6 +506,70 @@ footer p{
 	}
 	.bottom{
 		padding:50px;
+	}
+
+	.wallet input{
+  		width:60%;
+  		height:44px;
+  		margin: 40px 5px 40px 0;
+	}
+
+	.btn-success{
+		width:20%;
+		display:inline-block;
+		height:44px;
+		margin: 40px 5px;
+		padding:10px 20px;
+
+	    font-family: 'Roboto Slab', serif;
+	    font-weight: 300;
+	    font-size:16px;
+
+		  -webkit-transition: all 0.3s ease-in-out;
+			-moz-transition: all 0.3s ease-in-out;
+			-o-transition: all 0.3s ease-in-out;
+			transition: all 0.3s ease-in-out;
+	}
+	.wallet .disabled{
+		display:inline-block;
+		height:44px;
+		width:13%;
+		margin: 40px 5px;
+
+		border:solid 2px #13a2d4;
+	  	background-color:#fff;
+	  	padding:10px;
+	  	color:#13a2d4;
+	  	font-family: 'Roboto Slab', serif;
+	  	font-weight: 300;
+	  	font-size:16px;
+
+	  	-webkit-transition: all 0.3s ease-in-out;
+		-moz-transition: all 0.3s ease-in-out;
+		-o-transition: all 0.3s ease-in-out;
+		transition: all 0.3s ease-in-out;
+	}
+	
+	.wallet .btn-primary{
+		display:inline-block;
+		height:44px;
+		width:13%;
+		margin: 40px 5px;
+		padding:10px;
+	}
+
+	.wallet .col-sm-12 p{
+		padding:50px 10px;
+	}
+
+
+	.create input{
+		width:100%;
+		margin:10px auto;
+	}
+
+	.create .form-horizontal{
+		padding:40px;
 	}
 
 }

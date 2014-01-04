@@ -19,16 +19,16 @@ $(function() {
 	<div ng-show="wallet.address">
 
 		<div class="row" style="margin-bottom: 10px;">
-		  <div class="span8">
+		  <div class="col-sm-8">
 			<h1>Your Wallet</h1>
 		  </div>
-		  <div class="span4">
+		  <div class="col-sm-4">
 			<h1 style="float: right; margin-right: 0px;" ng-show="balance">{{balance}} BTC</h1>
 		  </div>  
 		</div>
 
 		<div class="row">
-		  <div class="span6">
+		  <div class="col-sm-6">
 			<h2><a href="https://blockchain.info/address/{{address}}" target='new' class="btn">View Transactions <i class="icon-share"></i></a></h2>
 
 			<div style="text-align:center;padding-top:10px;padding-bottom:10px;overflow:hidden" class="no-watch-only">
@@ -58,7 +58,7 @@ $(function() {
 				
 		  </div>
 		  
-		  <div class="span6">
+		  <div class="col-sm-6">
 			  <form class="well form-horizontal" action="register" method="POST" enctype="multipart/form-data">
 				  <fieldset>
 					<legend>Send Bitcoins</legend>
