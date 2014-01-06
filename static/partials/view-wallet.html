@@ -11,7 +11,7 @@ $(function() {
 <div class="page-content container">
 
 	<div class="row" ng-show="get_error"> 
-		<div class="alert alert-error"> 
+		<div class="alert alert-danger"> 
 		  <strong>Error!</strong> {{get_error}}
 		</div> 
 	</div>
@@ -29,15 +29,15 @@ $(function() {
 
 		<div class="row">
 		  <div class="col-sm-6">
-			<h2><a href="https://blockchain.info/address/{{address}}" target='new' class="btn">View Transactions <i class="icon-share"></i></a></h2>
+			<h2><a href="https://blockchain.info/address/{{address}}" target='new' class="btn btn-default" role="button">View Transactions <i class="icon-share"></i></a></h2>
 
 			<div style="text-align:center;padding-top:10px;padding-bottom:10px;overflow:hidden" class="no-watch-only">
 				<div id="my-primary-addres-qr-code" style="vertical-align:top;margin-right:10px;"><qrcode class="pull-left" size="125" data="{{address}}"></qrcode></div>
 
-				<div style="display:inline-block;vertical-align:middle;margin-top:5px;" class="well">
+				<div style="display:inline-block;vertical-align:middle;margin-top:0px;" class="well">
 					<small>Your Bitcoin Address is:</small>
 
-					<h3>{{address}}</h3>
+					<h4>{{address}}</h4>
 
 					<small>You can receive payments at this address.</small>
 				</div>
@@ -63,7 +63,7 @@ $(function() {
 				  <fieldset>
 					<legend>Send Bitcoins</legend>
 					
-						<div class="alert alert-error" ng-show="send_error"> 
+						<div class="alert alert-danger" ng-show="send_error"> 
 						  <strong>Error!</strong> {{send_error}}
 						</div> 
 					  

@@ -11,10 +11,11 @@
 					<p>Anyone who possesses both the primary and backup private keys can spend your funds, so you should <b>write this mnemonic down somewhere secure</b>.
 					
 					<p>
-					<input id="generated" ng-model="mnemonic" class="input-xxlarge" type="text">
-					<button class="btn" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_mnemonic()"><span class="glyphicon glyphicon-repeat"></span></button>
+					<input id="generated" readonly="" ng-model="mnemonic" class="mnemonic" type="text">
+					<button class="btn btn-default" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_mnemonic()"><span class="glyphicon glyphicon-repeat"></span></button>
+
+					<p>
 					<button class="btn btn-primary" type="button" ng-click="generate_key()">Generate Key</button>
-					</p>
 
 					<div class="progress progress-striped" style="margin-top: 10px; width: 100%;" ng-show="show_progress">
 					  <div class="progress-bar progress-bar-success" id="seed-progress" role="progressbar" style="width: 0%;"></div>
@@ -22,7 +23,7 @@
 					
 					<div ng-show="key">
 						<p>This mnemonic generates the following public key:
-						<p><input ng-model="key.publicKey" readonly="" class="input-xxlarge" type="text">
+						<p><input ng-model="key.publicKey" readonly="" class="mnemonic" type="text">
 						<p>Make a note of this key to complete your TrustedCoin wallet.  You can email it to yourself -- it's public so it doesn't matter if other people see it.
 						<p>To recap,
 						<ol>

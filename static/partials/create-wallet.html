@@ -10,8 +10,9 @@
 					<p>We do not store this mnemonic, so you <b>must write it down</b>.
 					
 					<p>
-					<input id="generated" readonly="" ng-model="backup_mnemonic" class="form-control23" type="text">
-					<button class="btn" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_backup_mnemonic()"><span class="glyphicon glyphicon-repeat"></span></button>
+
+					<input id="generated" readonly="" ng-model="backup_mnemonic" class="mnemonic" type="text">
+					<button class="btn btn-default" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_backup_mnemonic()"><span class="glyphicon glyphicon-repeat"></span></button>
 					</p>
 					
 					<p>If you want extra security (because you're concerned the computer you're currently on may be compromised), you can <a ng-click="state='enter_backup'">create this backup mnemonic on another computer</a>.
@@ -28,8 +29,8 @@
 					<p>So <b>go to another computer</b> and visit:
 					<p><a href="https://api.trustedcoin.com/wallet/#/gen-key">https://api.trustedcoin.com/wallet/#/gen-key</a>
 					<p>Follow the instructions and enter the public key you generate:
-					<p><input placeholder="Enter public key" class="input-xxlarge" type="text" ng-model="secondary_public_key"> 
-					   <a class="btn disabled" ng-hide="secondary_public_key">Next</a> <a ng-click="state='choose_primary'" class="btn btn-primary" ng-show="secondary_public_key">Next</a>
+					<p><input placeholder="Enter public key" class="mnemonic" type="text" ng-model="secondary_public_key"> 
+					   <a class="btn btn-primary" ng-hide="secondary_public_key" disabled="disabled" role="button">Next</a> <a ng-click="state='choose_primary'" class="btn btn-primary" ng-show="secondary_public_key" role="button">Next</a>
 				</div>
 				
 				<div ng-show="state=='choose_primary'">
@@ -39,8 +40,8 @@
 					<p>We do not store this mnemonic, so you <b>must write it down</b>.
 					
 					<p>
-					<input id="generated" readonly="" ng-model="primary_mnemonic" class="input-xxlarge" type="text">
-					<button class="btn" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_primary_mnemonic()"><span class="glyphicon glyphicon-repeat"></span></button>
+					<input id="generated" readonly="" ng-model="primary_mnemonic" class="mnemonic" type="text">
+					<button class="btn btn-default" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_primary_mnemonic()"><span class="glyphicon glyphicon-repeat"></span></button>
 					</p>
 					
 					<div class="form-actions" ng-hide="show_progress">
@@ -53,7 +54,8 @@
 					<p>Let's check that you wrote your primary mnemonic down correctly.
 					
 					<p>
-					<input id="generated" ng-model="verify_mnemonic" class="input-xxlarge" type="text">
+					<input id="generated" ng-model="verify_mnemonic" class="mnemonic" type="text">
+					<p>
 					<button class="btn btn-primary" type="button" ng-click="verify_primary_mnemonic()">Verify Mnemonic</button>
 					  
 					<div ng-show="not_verified">
@@ -68,27 +70,28 @@
 					<p>Every time someone attempts to spend funds from this wallet, we'll notify you and give you 24 hours to cancel the transaction.
 					<p>Please enter the email address and phone number for SMS messages you'd like to us to use.
 					
-					<div class="alert alert-error" ng-show="error"> 
+					<div class="alert alert-danger" ng-show="error"> 
 					  <strong>Error!</strong> {{error}}
 					</div> 
 					
-					  <div class="control-group">
-						<label class="control-label" for="id_email">Your Email<br><span class="text-error">{{errors.email}}</span></label>
-						<div class="controls">
-						  <input type="text" class="span4" ng-model="email">
-						</div>
+					<div class="form-group">
+					  <div class="col-md-12 ">
+						   <div class="field">
+							<input id="Email" name="Email" placeholder="Your Email" class="form-control " type="text" ng-model="email">
+						  </div>
 					  </div>
-					  
-					  <div class="control-group">
-						<label class="control-label" for="id_email">Your Phone</label>
-						<div class="controls">
-						  <input type="text" class="span4" ng-model="phone">
-						</div>
+					</div>
+					
+					<div class="form-group">
+					  <div class="col-md-12 ">
+						   <div class="field">
+							<input id="Phone" name="Phone" placeholder="Your Phone Number" class="form-control " type="text" ng-model="phone">
+						  </div>
 					  </div>
-					  
+					</div>
 					
 					  <div class="form-actions">
-						<a ng-click="create_wallet()" class="btn btn-primary">Create Wallet</a>
+						<a ng-click="create_wallet()" class="btn btn-primary" role="button">Create Wallet</a>
 					  </div>
 
 				</div>
