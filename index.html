@@ -103,23 +103,33 @@
     </div><!-- /container -->
   </footer>
 
-
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js?1"></script>
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-47122505-2']);
+	  _gaq.push(['_trackPageview']);
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+  
+    <script src="static/js/jquery-1.10.2.min.js"></script>
     <script src="static/js/bootstrap.min.js"></script>
     <script src="static/lib/angularjs-1.0.5/angular.min.js"></script>
     <script src="static/js/retina.js"></script>
 
-    <script src="static/lib/bitcoinjs-lib/bitcoinjs.js"></script>
+	
+    <script src="static/lib/bitcoinjs-lib/sjcl.min.js"></script>
+    <script src="static/lib/bitcoinjs-lib/bitcoinjs-lib-bitgo.js"></script>
     <script src="static/lib/bitcoinjs-lib/electrum.js"></script>
     <script src="static/lib/bitcoinjs-lib/mnemonic.js"></script>
     <script src="static/lib/bitcoinjs-lib/bitcoinsig.js"></script>	
-    <script src="static/lib/bitcoinjs-lib/util.js"></script>	
-	
+
     <script src="static/js/blockchain.js"></script>    
     <script src="static/js/qrcode.js"></script>    
     <script src="static/js/trustedcoin.js?1"></script>    
-    <script src="static/js/wallet.js?1"></script>    
-	
+    <script src="static/js/wallet.js?1"></script>   
   </body>
 
 </html>

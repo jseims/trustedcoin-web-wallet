@@ -79,6 +79,11 @@ var myModule = angular.module('myModule', [])
   }])
   .run(function($rootScope, $log, $location, $filter, $http, $timeout, $window) {
     $rootScope.site_name = 'Trusted Coin';
+	
+    var track = function() {
+        $window._gaq.push(['_trackPageview', $location.path()]);
+    };
+    $rootScope.$on('$viewContentLoaded', track);	
 });
 
 function VisitorCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
