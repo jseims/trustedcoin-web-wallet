@@ -1,8 +1,7 @@
 var trustedcoin = trustedcoin || {};
 
 trustedcoin.generate_mnemonic = function() {
-    var pk = new Array(32);
-    rng_get_bytes(pk);
+    var pk = Crypto.util.randomBytes(32);
     var seed = Crypto.util.bytesToHex(pk.slice(0,16));
     // nb! electrum doesn't handle trailing zeros very well
     // and we want to stay compatible.
@@ -20,7 +19,7 @@ trustedcoin.mnemoic_to_key = function(mnemonic, keyReadyCallback, keyProgressCal
             keyReadyCallback({
                 key: key,
                 address: key.getBitcoinAddress().toString(),
-                privateKey: key.getExportedPrivateKey(),
+                privateKey: key.getWalletImportFormat(),
                 publicKey: Crypto.util.bytesToHex(key.getPub())
             });
         });
