@@ -77,7 +77,7 @@ trustedcoin.get_cosigner = function(address, success_callback, error_callback) {
 	});
 };
 
-trustedcoin.start_send = function(from_address, to_address, amount, success_callback, error_callback) {
+trustedcoin.send_start = function(from_address, to_address, amount, success_callback, error_callback) {
 	jQuery.ajax({
 			  url: "https://api.trustedcoin.com/1/cosigner/" + from_address + "/send_start",
 			  type: "POST",
@@ -96,3 +96,28 @@ trustedcoin.start_send = function(from_address, to_address, amount, success_call
 			  }
 	});
 };
+
+trustedcoin.send_finish = function(from_address, partial_transaction, callback_url, success_callback, error_callback) {
+	var params = {"partial_transaction": partial_transaction};
+	if (callback_url) {
+		params["callback_url"] = callback_url;
+	}
+	jQuery.ajax({
+			  url: "https://api.trustedcoin.com/1/cosigner/" + from_address + "/send_finish",
+			  type: "POST",
+			  data: JSON.stringify(params),
+			  dataType: "json",
+			  contentType : 'application/json',		  
+			  beforeSend: function(x) {
+				if (x && x.overrideMimeType) {
+				  x.overrideMimeType("application/j-son;charset=UTF-8");
+				}
+			  },
+			  success: success_callback,
+			  error: function(data) {
+				var errorObj = JSON.parse(data.responseText);
+				error_callback(errorObj.message);
+			  }
+	});
+};
+

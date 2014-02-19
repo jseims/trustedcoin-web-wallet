@@ -101,12 +101,12 @@ function GenKeyCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 	$scope.key = null;
 	$scope.show_progress = false;
 	
-	var keyReadyCallback = function(key) {
-		//$log.log(key);
+	var keyReadyCallback = function(data) {
+		//$log.log(data);
 		$scope.show_progress = false;
 		
 		$scope.$apply(function() {
-			$scope.key = key;
+			$scope.key = data.key;
 		});
 	}
 	
@@ -239,6 +239,7 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 	var startSendCallback = function(data) {
 		$log.log(data);
 		$scope.unsigned_transaction = data.unsigned_transaction;
+		$scope.inputs = data.inputs;
 		$scope.prompt_sign = true;
 		$scope.send_error = null;
 		$scope.$apply();
@@ -249,6 +250,10 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 		$scope.$apply();
 	};	
 	
+	var finishSendCallback = function(data) {
+		$log.log(data);
+	};	
+	
 	
 	$scope.send_btc = function() {
 		var amount = parseInt($scope.to_amount);
@@ -256,21 +261,39 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 		var satoshis = parseFloat($scope.to_amount) * 100000000;
 		if (satoshis > 0) {
 			$scope.send_error = null;
-			trustedcoin.start_send($scope.address, $scope.to_address, satoshis, startSendCallback, sendErrorCallback);
+			trustedcoin.send_start($scope.address, $scope.to_address, satoshis, startSendCallback, sendErrorCallback);
 		} else {
 			$scope.send_error = "Must enter a valid number of BTC for 'Amount'";
 			
 		}
 	};
 	
-	var keyReadyCallback = function(key) {
+	var keyReadyCallback = function(data) {
 		//$log.log(key);
 		$scope.show_progress = false;
 		
 		$scope.$apply(function() {
-			$scope.key = key;
+			$scope.key = data.key;
 		});
 		$log.log("signing " + $scope.unsigned_transaction + " with " + $scope.key.privateKey);
+		$log.log(key);
+		
+		var unsigned = $scope.unsigned_transaction;
+		var tx = Bitcoin.Transaction.deserialize(Crypto.util.hexToBytes(unsigned));
+		
+		for(var i = 0; i < $scope.inputs.length; i++) {
+			tx.ins[i].script = new Bitcoin.Script(Crypto.util.hexToBytes($scope.inputs[i].scriptPubKey));
+		}
+		
+		var redeemScript = Crypto.util.hexToBytes($scope.inputs[0].redeemScript);
+		tx.signWithMultiSigScript([$scope.key], redeemScript)
+		var signed = Crypto.util.bytesToHex(tx.serialize())		
+		
+		$log.log("signed: " + signed);
+		
+		trustedcoin.send_finish($scope.address, signed, null, finishSendCallback, sendErrorCallback);
+		
+		
 	};
 	
 	$scope.sign_transaction = function() {
