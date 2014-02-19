@@ -26,12 +26,14 @@ trustedcoin.mnemoic_to_key = function(mnemonic, keyReadyCallback, keyProgressCal
     });
 };
 
-trustedcoin.encrypt = function(clear_text, key) {
-	return clear_text;
+trustedcoin.encrypt = function(plaintext, password) {
+    Crypto.SHA1 = Crypto.SHA256; // hack to workaround bug in bitcoinjs-lib
+    return Crypto.AES.encrypt(plaintext, password);
 };
 
-trustedcoin.decrypt = function(cipher_text, key) {
-	return cipher_text;
+trustedcoin.decrypt = function(ciphertext, password) {
+    Crypto.SHA1 = Crypto.SHA256; // hack to workaround bug in bitcoinjs-lib
+    return Crypto.AES.encrypt(ciphertext, password);
 };
 
 trustedcoin.sign_transaction = function(private_key, raw_transaction) {
