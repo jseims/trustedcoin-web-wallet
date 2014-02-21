@@ -1,0 +1,101 @@
+<div class="page-content container">
+
+	<div class="row" ng-show="get_error"> 
+		<div class="alert alert-danger"> 
+		  <strong>Error!</strong> {{get_error}}
+		</div> 
+	</div>
+
+	<div>
+
+		<div class="row" style="margin-bottom: 10px;">
+		  <div class="col-sm-8">
+			<h1>Your Wallet</h1>
+		  </div>
+		  <div class="col-sm-4">
+			<h1 style="float: right; margin-right: 0px;" ng-show="balance">{{balance}} BTC</h1>
+		  </div>  
+		</div>
+
+		<div class="row">
+		  <div class="col-sm-6">
+			<h2><a href="#/wallet/{{address}}" class="btn btn-default" role="button">Wallet Home</a></h2>
+
+			<p>The rationale behind the TrustedCoin wallet is that your funds should be safe even if your computer gets compromised (assuming you used a separate computer to generate the backup mnemonic, and both your computers aren't compromised by the same actor).
+			
+			<p>There are a couple scenarios in which you'll want to bypass TrustedCoin in moving your funds:
+			
+			<ul>
+			  <li>If TrustedCoin goes out of business</li>
+			  <li>A hacker has compromised one of your computers, and is spamming you with attempts at stealing your funds</li>
+			</ul>
+			
+			<p>In these situations, you can use both your mnemonics to move your funds unilaterally.
+			
+			<p>You'll need to know your redeem script, which you should write down as it might not be available if TrustedCoin were to disappear:
+			
+			<p class="alert alert-danger" style="word-wrap:break-word;">Please make a record of the following redeem script: {{wallet.script}}
+		
+				
+		  </div>
+		 		  
+		  
+		  <div class="col-sm-6">
+			  <form class="well form-horizontal" role="form">
+				  <legend>Emergency Sweep Account (bypassing TrustedCoin)</legend>
+				
+				  <div class="alert alert-danger" ng-show="send_error"> 
+					<strong>Error!</strong> {{send_error}}
+				  </div> 
+
+				  <div class="form-group">
+					<label for="address" class="col-sm-2 control-label">To:</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" ng-model="to_address" id="address" placeholder="Bitcoin Address">
+					</div>
+				  </div>
+				  
+				  <div class="form-group">
+					<label for="amount" class="col-sm-2 control-label">Amount:</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" ng-model="amount" id="amount" placeholder="BTC">
+					</div>
+				  </div>					  
+				  
+				  <div class="form-group">
+					<label for="address" class="col-sm-2 control-label">Primary Mnemonic:</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" ng-model="primary_mnemonic" id="primary_mnemonic">
+					</div>
+				  </div>
+				  
+				  <div class="form-group">
+					<label for="address" class="col-sm-2 control-label">Backup Mnemonic:</label>
+					<div class="col-sm-10">
+					  <input type="text" class="form-control" ng-model="backup_mnemonic" id="backup_mnemonic">
+					</div>
+				  </div>
+				  
+				  <div class="form-group">
+					<label for="address" class="col-sm-2 control-label">Redeem Script:</label>
+					<div class="col-sm-10">
+					  <textarea rows="4" class="form-control" ng-model="wallet.script" id="redeem_script"></textarea>
+					</div>
+				  </div>
+				  
+				  <div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+					  <button ng-click="send_btc()" class="btn btn-primary">Send</button>
+					</div>
+				  </div>
+				  
+					<div class="progress progress-striped" style="margin-top: 10px; width: 100%;" ng-show="show_progress">
+					  <div class="progress-bar progress-bar-success" id="seed-progress" role="progressbar" style="width: 0%;"></div>
+					</div>
+				  
+			  </form>
+		  </div>
+		  
+		</div>
+	</div>
+</div>	

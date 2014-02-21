@@ -10,6 +10,7 @@ var myModule = angular.module('myModule', [])
       when('/', {controller:VisitorCtrl, templateUrl:'static/partials/wallet.html'}).
       when('/create-wallet', {controller:CreateWalletCtrl, templateUrl:'static/partials/create-wallet.html'}).
       when('/wallet/:address', {controller:WalletCtrl, templateUrl:'static/partials/view-wallet.html'}).
+      when('/wallet_security/:address', {controller:WalletSecurityCtrl, templateUrl:'static/partials/wallet-security.html'}).
       when('/gen-key', {controller:GenKeyCtrl, templateUrl:'static/partials/gen-key.html'}).
       otherwise({redirectTo:'/'});
   })
@@ -119,7 +120,7 @@ function GenKeyCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 	
 	$scope.generate_key = function() {
 		$scope.show_progress = true;
-        trustedcoin.mnemoic_to_key($scope.mnemonic, keyReadyCallback, keyProgressCallback);	
+        trustedcoin.mnemonic_to_key($scope.mnemonic, keyReadyCallback, keyProgressCallback);	
 	}
 }
 
@@ -138,7 +139,6 @@ function CreateWalletCtrl($scope, $rootScope, $http, $location, $routeParams, $l
 	};
 	
 	var backupKeyReadyCallback = function(key) {
-		//$log.log(key);
 		$scope.show_progress = false;
 		
 		$scope.$apply(function() {
@@ -150,7 +150,7 @@ function CreateWalletCtrl($scope, $rootScope, $http, $location, $routeParams, $l
 	
 	$scope.generate_backup_key = function() {
 		$scope.show_progress = true;
-        trustedcoin.mnemoic_to_key($scope.backup_mnemonic, backupKeyReadyCallback, keyProgressCallback);	
+        trustedcoin.mnemonic_to_key($scope.backup_mnemonic, backupKeyReadyCallback, keyProgressCallback);	
 	};
 	
 	var primaryKeyReadyCallback = function(key) {
@@ -166,7 +166,7 @@ function CreateWalletCtrl($scope, $rootScope, $http, $location, $routeParams, $l
 	
 	$scope.generate_primary_key = function() {
 		$scope.show_progress = true;
-        trustedcoin.mnemoic_to_key($scope.primary_mnemonic, primaryKeyReadyCallback, keyProgressCallback);	
+        trustedcoin.mnemonic_to_key($scope.primary_mnemonic, primaryKeyReadyCallback, keyProgressCallback);	
 	};
 	
 	$scope.verify_primary_mnemonic = function() {
@@ -292,13 +292,11 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 		$log.log("signed: " + signed);
 		
 		trustedcoin.send_finish($scope.address, signed, null, finishSendCallback, sendErrorCallback);
-		
-		
 	};
 	
 	$scope.sign_transaction = function() {
 		$scope.show_progress = true;
-        trustedcoin.mnemoic_to_key($scope.mnemonic, keyReadyCallback, keyProgressCallback);	
+        trustedcoin.mnemonic_to_key($scope.mnemonic, keyReadyCallback, keyProgressCallback);	
 	};
 	
 	$scope.encrypt_mnemonic = function() {
@@ -313,6 +311,70 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 		localStorage.removeItem(key);
 		$scope.encrypted_mnemonic = null;
 	};
+}
+
+
+function WalletSecurityCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
+	$scope.address = $routeParams.address;
+	var key = $scope.address + "-mnemonic";
+	$scope.encrypted_mnemonic =	localStorage.getItem(key);
+	
+	var balanceCallback = function(text) {
+		$scope.balance = Bitcoin.Util.formatValue(text);
+		$scope.$apply();		
+	};
+	
+	
+	BLOCKCHAIN.retrieveBalance($scope.address, balanceCallback);
+	
+	var getWalletCallback = function(data) {
+		$scope.wallet = data;		
+		$scope.$apply();		
+	};
+	
+	var getErrorCallback = function(text) {
+		$scope.get_error = text;
+		$scope.$apply();
+	};	
+	
+	trustedcoin.get_cosigner($scope.address, getWalletCallback, getErrorCallback);
+
+		
+	var backupKeyReadyCallback = function(data) {
+		$log.log(data);
+		$scope.show_progress = false;
+		$scope.backup_key = data.key;
+		$log.log("found backup key");
+		$log.log($scope.backup_key);
+		
+	};	
+	
+	var primaryKeyReadyCallback = function(data) {
+		$log.log(data);
+		$scope.primary_key = data.key;
+		$log.log("found primary key");
+		$log.log($scope.primary_key);
+		
+		trustedcoin.mnemonic_to_key($scope.backup_mnemonic, backupKeyReadyCallback, keyProgressCallback);	
+	};
+
+	var parseUnspent = function(text) {
+		try {
+			$scope.unspent = trustedcoin.parse_unspent(text);
+			$log.log($scope.unspent);
+			$scope.show_progress = true;
+			trustedcoin.mnemonic_to_key($scope.primary_mnemonic, primaryKeyReadyCallback, keyProgressCallback);	
+		} catch(err) {
+			$scope.get_error = "Error in parsing unspent outputs";
+			$scope.$apply();
+		}
+	};
+	
+	$scope.send_btc = function() {
+		BLOCKCHAIN.getUnspentOutputs($scope.address, parseUnspent);
+
+	};
+	
 }
 
 
