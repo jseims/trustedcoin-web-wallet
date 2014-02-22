@@ -12,20 +12,22 @@ trustedcoin.generate_mnemonic = function() {
 trustedcoin.mnemonic_to_key = function(mnemonic, keyReadyCallback, keyProgressCallback) {
     var seed = mn_decode(mnemonic);
 	
-	console.log(mnemonic + " generates " + seed);
-    
-    Electrum.init(seed, keyProgressCallback, function(key) {
-        Electrum.gen(1, function(r) {
-            var key = new Bitcoin.ECKey(r[1]);
-            key.setCompressed(true);
-            keyReadyCallback({
-                key: key,
-                address: key.getBitcoinAddress().toString(),
-                privateKey: key.getWalletImportFormat(),
-                publicKey: Crypto.util.bytesToHex(key.getPub())
-            });
-        });
-    });
+	// putting in setTimeout as Electrum needs to clean up state at end of thread execution
+	setTimeout(function() {
+		Electrum.init(seed, keyProgressCallback, function(key) {
+			Electrum.gen(1, function(r) {
+				console.log(r);
+				var key = new Bitcoin.ECKey(r[1]);
+				key.setCompressed(true);
+				keyReadyCallback({
+					key: key,
+					address: key.getBitcoinAddress().toString(),
+					privateKey: key.getWalletImportFormat(),
+					publicKey: Crypto.util.bytesToHex(key.getPub())
+				});
+			});
+		});
+	 }, 0);
 };
 
 trustedcoin.encrypt = function(plaintext, password) {
@@ -38,10 +40,66 @@ trustedcoin.decrypt = function(ciphertext, password) {
     return Crypto.AES.encrypt(ciphertext, password);
 };
 
-trustedcoin.sign_transaction = function(private_key, raw_transaction) {
-	return "<signed transaction>";
+trustedcoin.sign_transaction = function(unsigned_transaction, inputs, keyArray) {
+	var tx = Bitcoin.Transaction.deserialize(Crypto.util.hexToBytes(unsigned_transaction));
+	
+	for(var i = 0; i < inputs.length; i++) {
+		tx.ins[i].script = new Bitcoin.Script(Crypto.util.hexToBytes(inputs[i].scriptPubKey));
+	}
+	
+	var redeemScript = Crypto.util.hexToBytes(inputs[0].redeemScript);
+	tx.signWithMultiSigScript(keyArray, redeemScript)
+	return Crypto.util.bytesToHex(tx.serialize())		
 };
 
+trustedcoin.construct_transaction = function(address, to_address, amount, fee, unspent, redeemScript, primary_key, backup_key) {
+	var sendTx = new Bitcoin.Transaction();
+	var selectedOuts = [];
+	var inputs = unspent['unspenttxs'];
+	for (var hash in inputs) {
+		if (!inputs.hasOwnProperty(hash))
+			continue;
+		for (var index in inputs[hash]) {
+			if (!inputs[hash].hasOwnProperty(index))
+				continue;
+			var script = trustedcoin.parseScript(inputs[hash][index].script);
+			var b64hash = Crypto.util.bytesToBase64(Crypto.util.hexToBytes(hash));
+			var txin = new Bitcoin.TransactionIn({outpoint: {hash: b64hash, index: index}, script: script, sequence: 4294967295});
+			selectedOuts.push(txin);
+			sendTx.addInput(txin);
+		}
+	}
+
+	// destination output
+	var value = new BigInteger('' + Math.round(amount * 1e8), 10);
+	sendTx.addOutput(new Bitcoin.Address(to_address), value);
+	
+	// change output
+	var balance = unspent['balance'];
+	if (amount + fee < balance) {
+		var change = balance - amount - fee;
+		value = new BigInteger('' + Math.round(change * 1e8), 10);
+		sendTx.addOutput(new Bitcoin.Address(address), value);		
+	}
+	
+	redeemScript = Crypto.util.hexToBytes(redeemScript);
+	sendTx.signWithMultiSigScript([primary_key, backup_key], redeemScript)
+
+	return Crypto.util.bytesToHex(sendTx.serialize());
+};
+
+trustedcoin.parseScript = function(script) {
+    var newScript = new Bitcoin.Script();
+    var s = script.split(" ");
+    for (var i = 0; i < s.length; i++) {
+        if (Bitcoin.Opcode.map.hasOwnProperty(s[i])){
+            newScript.writeOp(Bitcoin.Opcode.map[s[i]]);
+        } else {
+            newScript.writeBytes(Crypto.util.hexToBytes(s[i]));
+        }
+    }
+    return newScript;
+}
 
 	
 trustedcoin.dumpScript = function(script) {

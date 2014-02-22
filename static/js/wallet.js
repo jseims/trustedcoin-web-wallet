@@ -278,16 +278,7 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 		$log.log("signing " + $scope.unsigned_transaction + " with " + $scope.key.privateKey);
 		$log.log(key);
 		
-		var unsigned = $scope.unsigned_transaction;
-		var tx = Bitcoin.Transaction.deserialize(Crypto.util.hexToBytes(unsigned));
-		
-		for(var i = 0; i < $scope.inputs.length; i++) {
-			tx.ins[i].script = new Bitcoin.Script(Crypto.util.hexToBytes($scope.inputs[i].scriptPubKey));
-		}
-		
-		var redeemScript = Crypto.util.hexToBytes($scope.inputs[0].redeemScript);
-		tx.signWithMultiSigScript([$scope.key], redeemScript)
-		var signed = Crypto.util.bytesToHex(tx.serialize())		
+		var signed = trustedcoin.sign_transaction($scope.unsigned_transaction, $scope.inputs, [$scope.key]);
 		
 		$log.log("signed: " + signed);
 		
@@ -339,14 +330,32 @@ function WalletSecurityCtrl($scope, $rootScope, $http, $location, $routeParams, 
 	
 	trustedcoin.get_cosigner($scope.address, getWalletCallback, getErrorCallback);
 
+	var txCallback = function(text) {
+		$log.log("tx sent");
+		$log.log(text);		
+	};
 		
 	var backupKeyReadyCallback = function(data) {
 		$log.log(data);
 		$scope.show_progress = false;
+		$scope.$apply();
 		$scope.backup_key = data.key;
 		$log.log("found backup key");
 		$log.log($scope.backup_key);
 		
+		// computer actual amount, minus fee
+		var fee = 0.0001;
+		var balance = $scope.unspent['balance'];
+		var amount = $scope.amount;
+		if (fee < balance) {
+			amount = Math.min(amount, balance - fee);
+			var tx = trustedcoin.construct_transaction($scope.address, $scope.to_address, amount, fee, $scope.unspent, $scope.wallet.script, $scope.primary_key, $scope.backup_key);
+			$log.log(tx);
+			BLOCKCHAIN.sendTX(tx, txCallback);
+		} else {
+			$scope.get_error = "Too small a balance to send (less than miner fee)";
+			$scope.$apply();
+		}
 	};	
 	
 	var primaryKeyReadyCallback = function(data) {
@@ -363,6 +372,7 @@ function WalletSecurityCtrl($scope, $rootScope, $http, $location, $routeParams, 
 			$scope.unspent = trustedcoin.parse_unspent(text);
 			$log.log($scope.unspent);
 			$scope.show_progress = true;
+			$scope.$apply();
 			trustedcoin.mnemonic_to_key($scope.primary_mnemonic, primaryKeyReadyCallback, keyProgressCallback);	
 		} catch(err) {
 			$scope.get_error = "Error in parsing unspent outputs";
