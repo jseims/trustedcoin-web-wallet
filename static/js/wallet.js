@@ -99,7 +99,7 @@ var keyProgressCallback = function(percentDone) {
 function GenKeyCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 
     $scope.mnemonic = trustedcoin.generate_mnemonic();
-	$scope.key = null;
+	$scope.publicKey = null;
 	$scope.show_progress = false;
 	
 	var keyReadyCallback = function(data) {
@@ -107,13 +107,13 @@ function GenKeyCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 		$scope.show_progress = false;
 		
 		$scope.$apply(function() {
-			$scope.key = data.key;
+			$scope.publicKey = data.publicKey;
 		});
 	}
 	
 	$scope.refresh_mnemonic = function() {
 		$scope.mnemonic = trustedcoin.generate_mnemonic();
-		$scope.key = null;
+		$scope.publicKey = null;
 		$('#seed-progress').css('width', '0%');
 		$scope.show_progress = false;
 	}
