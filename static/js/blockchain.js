@@ -22,6 +22,21 @@ var BLOCKCHAIN = new function () {
       }
   }
   
+  // blockchain.info/pushtx is failing with "invalid signature", but coinb works as a broadcast proxy
+  this.sendTX_coinb = function(tx, callback) {
+	var uid = "1";
+	var apikey = "12345678901234567890123456789012";
+	$.ajax ({
+		type: "POST",
+		url: "https://coinb.in/api/",
+		data: 'uid=' + uid + '&key=' + apikey + '&setmodule=bitcoin&request=sendrawtransaction&rawtx=' + tx,
+		dataType: "xml",
+		error: callback,
+		success: callback
+	});
+  }
+  
+  
   // Some cross-domain magic (to bypass Access-Control-Allow-Origin)
   this.tx_fetch = function(url, onSuccess, onError, postdata) {
       var useYQL = true;

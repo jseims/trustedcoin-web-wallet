@@ -75,7 +75,7 @@ trustedcoin.construct_transaction = function(address, to_address, amount, fee, u
 	sendTx.addOutput(new Bitcoin.Address(to_address), value);
 	
 	// change output
-	var balance = unspent['balance'];
+	var balance = unspent['balance'] / 100000000;
 	if (amount + fee < balance) {
 		var change = balance - amount - fee;
 		value = new BigInteger('' + Math.round(change * 1e8), 10);

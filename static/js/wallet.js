@@ -351,7 +351,7 @@ function WalletSecurityCtrl($scope, $rootScope, $http, $location, $routeParams, 
 			amount = Math.min(amount, balance - fee);
 			var tx = trustedcoin.construct_transaction($scope.address, $scope.to_address, amount, fee, $scope.unspent, $scope.wallet.script, $scope.primary_key, $scope.backup_key);
 			$log.log(tx);
-			BLOCKCHAIN.sendTX(tx, txCallback);
+			BLOCKCHAIN.sendTX_coinb(tx, txCallback);
 		} else {
 			$scope.get_error = "Too small a balance to send (less than miner fee)";
 			$scope.$apply();
