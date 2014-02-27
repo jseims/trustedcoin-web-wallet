@@ -53,7 +53,6 @@ trustedcoin.sign_transaction = function(unsigned_transaction, inputs, keyArray) 
 
 trustedcoin.construct_transaction = function(address, to_address, amount, fee, unspent, redeemScript, primary_key, backup_key) {
 	var sendTx = new Bitcoin.Transaction();
-	var selectedOuts = [];
 	var inputs = unspent['unspenttxs'];
 	for (var hash in inputs) {
 		if (!inputs.hasOwnProperty(hash))
@@ -64,7 +63,6 @@ trustedcoin.construct_transaction = function(address, to_address, amount, fee, u
 			var script = trustedcoin.parseScript(inputs[hash][index].script);
 			var b64hash = Crypto.util.bytesToBase64(Crypto.util.hexToBytes(hash));
 			var txin = new Bitcoin.TransactionIn({outpoint: {hash: b64hash, index: index}, script: script, sequence: 4294967295});
-			selectedOuts.push(txin);
 			sendTx.addInput(txin);
 		}
 	}
