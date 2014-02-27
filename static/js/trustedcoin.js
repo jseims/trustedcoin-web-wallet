@@ -16,7 +16,6 @@ trustedcoin.mnemonic_to_key = function(mnemonic, keyReadyCallback, keyProgressCa
 	setTimeout(function() {
 		Electrum.init(seed, keyProgressCallback, function(key) {
 			Electrum.gen(1, function(r) {
-				console.log(r);
 				var key = new Bitcoin.ECKey(r[1]);
 				key.setCompressed(true);
 				keyReadyCallback({
@@ -37,7 +36,7 @@ trustedcoin.encrypt = function(plaintext, password) {
 
 trustedcoin.decrypt = function(ciphertext, password) {
     Crypto.SHA1 = Crypto.SHA256; // hack to workaround bug in bitcoinjs-lib
-    return Crypto.AES.encrypt(ciphertext, password);
+    return Crypto.AES.decrypt(ciphertext, password);
 };
 
 trustedcoin.sign_transaction = function(unsigned_transaction, inputs, keyArray) {

@@ -181,7 +181,6 @@ function CreateWalletCtrl($scope, $rootScope, $http, $location, $routeParams, $l
 	}
 	
 	var createWalletCallback = function(data) {
-		$log.log(data);
 		$location.path("/wallet/" + data.address);
 		$scope.$apply();		
 	};
@@ -194,10 +193,6 @@ function CreateWalletCtrl($scope, $rootScope, $http, $location, $routeParams, $l
 	
 	
 	$scope.create_wallet = function() {
-		$log.log("primary public key: " + $scope.primary_public_key);
-		$log.log("secondary public key: " + $scope.secondary_public_key);
-		$log.log("phone " + $scope.phone);
-		$log.log("email " + $scope.email);
 		if (!$scope.primary_public_key || !$scope.secondary_public_key) {
 			$scope.error = "You're missing a private key -- try starting over";
 		} else if (!$scope.email && !$scope.phone) {
@@ -237,7 +232,6 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 	trustedcoin.get_cosigner($scope.address, getWalletCallback, getErrorCallback);
 	
 	var startSendCallback = function(data) {
-		$log.log(data);
 		$scope.unsigned_transaction = data.unsigned_transaction;
 		$scope.inputs = data.inputs;
 		$scope.prompt_sign = true;
@@ -251,13 +245,13 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 	};	
 	
 	var finishSendCallback = function(data) {
-		$log.log(data);
+		//$log.log(data);
 	};	
 	
 	
 	$scope.send_btc = function() {
 		var amount = parseInt($scope.to_amount);
-		$log.log("sending " + amount + " to " + $scope.to_address);
+		//$log.log("sending " + amount + " to " + $scope.to_address);
 		var satoshis = parseFloat($scope.to_amount) * 100000000;
 		if (satoshis > 0) {
 			$scope.send_error = null;
@@ -275,12 +269,11 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 		$scope.$apply(function() {
 			$scope.key = data.key;
 		});
-		$log.log("signing " + $scope.unsigned_transaction + " with " + $scope.key.privateKey);
-		$log.log(key);
+		//$log.log("signing " + $scope.unsigned_transaction + " with " + $scope.key.privateKey);
 		
 		var signed = trustedcoin.sign_transaction($scope.unsigned_transaction, $scope.inputs, [$scope.key]);
 		
-		$log.log("signed: " + signed);
+		//$log.log("signed: " + signed);
 		
 		trustedcoin.send_finish($scope.address, signed, null, finishSendCallback, sendErrorCallback);
 	};
@@ -336,12 +329,11 @@ function WalletSecurityCtrl($scope, $rootScope, $http, $location, $routeParams, 
 	};
 		
 	var backupKeyReadyCallback = function(data) {
-		$log.log(data);
 		$scope.show_progress = false;
 		$scope.$apply();
 		$scope.backup_key = data.key;
-		$log.log("found backup key");
-		$log.log($scope.backup_key);
+		//$log.log("found backup key");
+		//$log.log($scope.backup_key);
 		
 		// computer actual amount, minus fee
 		var fee = 0.0001;
@@ -359,10 +351,9 @@ function WalletSecurityCtrl($scope, $rootScope, $http, $location, $routeParams, 
 	};	
 	
 	var primaryKeyReadyCallback = function(data) {
-		$log.log(data);
 		$scope.primary_key = data.key;
-		$log.log("found primary key");
-		$log.log($scope.primary_key);
+		//$log.log("found primary key");
+		//$log.log($scope.primary_key);
 		
 		trustedcoin.mnemonic_to_key($scope.backup_mnemonic, backupKeyReadyCallback, keyProgressCallback);	
 	};
@@ -370,7 +361,7 @@ function WalletSecurityCtrl($scope, $rootScope, $http, $location, $routeParams, 
 	var parseUnspent = function(text) {
 		try {
 			$scope.unspent = trustedcoin.parse_unspent(text);
-			$log.log($scope.unspent);
+			//$log.log($scope.unspent);
 			$scope.show_progress = true;
 			$scope.$apply();
 			trustedcoin.mnemonic_to_key($scope.primary_mnemonic, primaryKeyReadyCallback, keyProgressCallback);	
