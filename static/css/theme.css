@@ -176,6 +176,21 @@ footer p{
 	font-size: 14px;
 }
 
+.mnemonic-display {
+	width:90%; 
+	float:left; 
+	border: 1px solid #ddd; 
+	border-radius: 4px; 
+	padding:5px 10px; 
+	background:#fff; 
+	font-size: 14px; 
+	color: #000; 
+	min-height: 34px;
+}
+
+.mnemonic-refresh {
+	margin-left: 4px;
+}
 
 /* =============== media queries 480px ===============*/
 @media (min-width: 480px){

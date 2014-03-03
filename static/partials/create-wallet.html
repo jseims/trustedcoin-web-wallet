@@ -9,13 +9,17 @@
 					<p>The following 12 words will generate your backup key.  You should only need this key in an emergency, such as if TrustedCoin disappears.
 					<p>We do not store this mnemonic, so you <b>must write it down</b>.
 					
-					<p>
-
-					<input id="generated" readonly="" ng-model="backup_mnemonic" class="mnemonic" type="text">
-					<button class="btn btn-default" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_backup_mnemonic()"><span class="glyphicon glyphicon-repeat"></span></button>
-					</p>
+					<div>
+						<div class="mnemonic-display">
+							{{backup_mnemonic}}
+						</div>
+						<button class="btn btn-default mnemonic-refresh" data-toggle="tooltip" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_backup_mnemonic()"><span class="glyphicon glyphicon-repeat"></span></button>
+					</div>
 					
-					<p>If you want extra security (because you're concerned the computer you're currently on may be compromised), you can <a ng-click="state='enter_backup'">create this backup mnemonic on another computer</a>.
+					<p style="clear:both;">
+					<div class="alert alert-danger">
+						If you want extra security (because you're concerned the computer you're currently on may be compromised), you can <a ng-click="state='enter_backup'">create this backup mnemonic on another computer</a>.
+					</div>
 					
 					<div class="form-actions" ng-hide="show_progress">
 					  <a ng-click="generate_backup_key()" class="btn btn-primary">OK, I wrote it down</a>
@@ -39,13 +43,16 @@
 					<p>You will need to enter these words every time you spend coins.
 					<p>We do not store this mnemonic, so you <b>must write it down</b>.
 					
-					<p>
-					<input id="generated" readonly="" ng-model="primary_mnemonic" class="mnemonic" type="text">
-					<button class="btn btn-default" data-toggle="tooltip" title="" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_primary_mnemonic()"><span class="glyphicon glyphicon-repeat"></span></button>
-					</p>
+					<div>
+						<div class="mnemonic-display">
+							{{primary_mnemonic}}
+						</div>
+						<button class="btn btn-default mnemonic-refresh" data-toggle="tooltip" type="button" data-original-title="Click to generate another random passphrase." ng-click="refresh_primary_mnemonic()"><span class="glyphicon glyphicon-repeat"></span></button>
+					</div>
+					
 					
 					<div class="form-actions" ng-hide="show_progress">
-					  <a ng-click="generate_primary_key()" class="btn btn-primary">OK, I wrote it down</a>
+					  <a ng-click="generate_primary_key()" class="btn btn-primary" style="clear:both; margin-top: 10px;">OK, I wrote it down</a>
 					</div>
 				</div>
 				
