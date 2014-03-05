@@ -88,6 +88,15 @@ var myModule = angular.module('myModule', [])
 });
 
 function VisitorCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
+
+	// dumb address validation -- doesn't do any checksum
+	$scope.valid_address = function() {
+		if ($scope.address && $scope.address.charAt(0) == '3' && $scope.address.length >= 27 && $scope.address.length <= 34) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 
 var keyProgressCallback = function(percentDone) {

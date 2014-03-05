@@ -4,7 +4,7 @@
 		<h1>A Secure Web Wallet Built on TrustedCoin</h1>
 		<form id="wallet-open">
 		  <input id="password" placeholder="Enter your Bitcoin Address" type="text" ng-model="address">
-		  <a class="btn btn-lg btn-primary" disabled="disabled" ng-hide="address">Open Wallet</a> <a href="#/wallet/{{address}}" class="btn btn-lg btn-primary" ng-show="address">Open Wallet</a>
+		  <a class="btn btn-lg btn-primary" disabled="disabled" ng-hide="valid_address()">Open Wallet</a> <a href="#/wallet/{{address}}" class="btn btn-lg btn-primary" ng-show="valid_address()">Open Wallet</a>
 		  <a href="#/create-wallet" class="btn btn-lg btn-success">Create a new wallet</a>
 		</form>
 			
