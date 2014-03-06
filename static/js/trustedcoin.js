@@ -1,7 +1,11 @@
 var trustedcoin = trustedcoin || {};
 
 trustedcoin.generate_mnemonic = function() {
-    var pk = Crypto.util.randomBytes(32);
+    var rng = new SecureRandom();
+    var pk = new Array();
+    pk.length = 32;
+    rng.nextBytes(pk);
+    
     var seed = Crypto.util.bytesToHex(pk.slice(0,16));
     // nb! electrum doesn't handle trailing zeros very well
     // and we want to stay compatible.
