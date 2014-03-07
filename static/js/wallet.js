@@ -219,17 +219,10 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 	$scope.address = $routeParams.address;
 	var key = $scope.address + "-mnemonic";
 	$scope.encrypted_mnemonic =	localStorage.getItem(key);
-	
-	var balanceCallback = function(text) {
-		$scope.balance = Bitcoin.Util.formatValue(text);
-		$scope.$apply();		
-	};
-	
-	
-	BLOCKCHAIN.retrieveBalance($scope.address, balanceCallback);
-	
+		
 	var getWalletCallback = function(data) {
-		$scope.wallet = data;		
+		$scope.wallet = data;	
+		$scope.balance = Bitcoin.Util.formatValue(data.balance);		
 		$scope.$apply();		
 	};
 	
@@ -310,17 +303,10 @@ function WalletSecurityCtrl($scope, $rootScope, $http, $location, $routeParams, 
 	$scope.address = $routeParams.address;
 	var key = $scope.address + "-mnemonic";
 	$scope.encrypted_mnemonic =	localStorage.getItem(key);
-	
-	var balanceCallback = function(text) {
-		$scope.balance = Bitcoin.Util.formatValue(text);
-		$scope.$apply();		
-	};
-	
-	
-	BLOCKCHAIN.retrieveBalance($scope.address, balanceCallback);
-	
+		
 	var getWalletCallback = function(data) {
-		$scope.wallet = data;		
+		$scope.wallet = data;	
+		$scope.balance = Bitcoin.Util.formatValue(data.balance);		
 		$scope.$apply();		
 	};
 	
