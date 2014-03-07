@@ -259,9 +259,8 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 	
 	
 	$scope.send_btc = function() {
-		var amount = parseInt($scope.to_amount);
-		//$log.log("sending " + amount + " to " + $scope.to_address);
-		var satoshis = parseFloat($scope.to_amount) * 100000000;
+		//$log.log("sending " + $scope.to_amount + " to " + $scope.to_address);
+		var satoshis = Math.floor(parseFloat($scope.to_amount) * 100000000);
 		if (satoshis > 0) {
 			$scope.send_error = null;
 			trustedcoin.send_start($scope.address, $scope.to_address, satoshis, startSendCallback, sendErrorCallback);
