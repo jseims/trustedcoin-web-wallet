@@ -187,11 +187,11 @@ trustedcoin.get_cosigner = function(address, success_callback, error_callback) {
 	});
 };
 
-trustedcoin.send_start = function(from_address, to_address, amount, success_callback, error_callback) {
+trustedcoin.send_start = function(from_address, to_address, amount, sweep, success_callback, error_callback) {
 	jQuery.ajax({
 			  url: "https://api.trustedcoin.com/1/cosigner/" + from_address + "/send_start",
 			  type: "POST",
-			  data: JSON.stringify({"output_address": to_address, "amount": amount}),
+			  data: JSON.stringify({"output_address": to_address, "amount": amount, "sweep" : sweep}),
 			  dataType: "json",
 			  contentType : 'application/json',		  
 			  beforeSend: function(x) {

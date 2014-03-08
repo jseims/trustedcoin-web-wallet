@@ -253,10 +253,16 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 	
 	$scope.send_btc = function() {
 		//$log.log("sending " + $scope.to_amount + " to " + $scope.to_address);
-		var satoshis = Math.floor(parseFloat($scope.to_amount) * 100000000);
-		if (satoshis > 0) {
+		var satoshis = 0;
+		var sweep = false;
+		if ($scope.to_amount == '"sweep"' || $scope.to_amount == 'sweep') {
+			sweep = true;
+		} else {
+			satoshis = Math.floor(parseFloat($scope.to_amount) * 100000000);
+		}
+		if (sweep == true || satoshis > 0) {
 			$scope.send_error = null;
-			trustedcoin.send_start($scope.address, $scope.to_address, satoshis, startSendCallback, sendErrorCallback);
+			trustedcoin.send_start($scope.address, $scope.to_address, satoshis, sweep, startSendCallback, sendErrorCallback);
 		} else {
 			$scope.send_error = "Must enter a valid number of BTC for 'Amount'";
 			
@@ -281,6 +287,9 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 	
 	$scope.sign_transaction = function() {
 		$scope.show_progress = true;
+		if (!$scope.mnemonic) {
+			$scope.mnemonic = trustedcoin.decrypt($scope.encrypted_mnemonic, $scope.password);
+		}
         trustedcoin.mnemonic_to_key($scope.mnemonic, keyReadyCallback, keyProgressCallback);	
 	};
 	
