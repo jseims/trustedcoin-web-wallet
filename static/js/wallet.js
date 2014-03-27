@@ -258,7 +258,7 @@ function WalletCtrl($scope, $rootScope, $http, $location, $routeParams, $log) {
 		if ($scope.to_amount == '"sweep"' || $scope.to_amount == 'sweep') {
 			sweep = true;
 		} else {
-			satoshis = Math.floor(parseFloat($scope.to_amount) * 100000000);
+			satoshis = Math.round(parseFloat($scope.to_amount) * 100000000);
 		}
 		if (sweep == true || satoshis > 0) {
 			$scope.send_error = null;
