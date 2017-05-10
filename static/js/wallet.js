@@ -315,14 +315,23 @@ function WalletSecurityCtrl($scope, $rootScope, $http, $location, $routeParams, 
 		
 	var getWalletCallback = function(data) {
 		$scope.wallet = data;	
-		$scope.balance = Bitcoin.Util.formatValue(data.balance);		
+		//$scope.balance = Bitcoin.Util.formatValue(data.balance);		
 		$scope.$apply();		
 	};
 	
 	var getErrorCallback = function(text) {
 		$scope.get_error = text;
 		$scope.$apply();
-	};	
+	};
+	
+	BLOCKCHAIN.retrieveBalance($scope.address, function(data, opt, errorData) {
+		if ( errorData ) {
+		    $scope.get_error = errorData;
+		} else {
+		    $scope.balance = Bitcoin.Util.formatValue(parseInt(data));
+		}
+		$scope.$apply();
+	})
 	
 	trustedcoin.get_cosigner($scope.address, getWalletCallback, getErrorCallback);
 
@@ -339,7 +348,7 @@ function WalletSecurityCtrl($scope, $rootScope, $http, $location, $routeParams, 
 		//$log.log($scope.backup_key);
 		
 		// computer actual amount, minus fee
-		var fee = 0.0001;
+		var fee = 0.0005;
 		var balance = $scope.unspent['balance'];
 		var amount = $scope.amount;
 		if (fee < balance) {
