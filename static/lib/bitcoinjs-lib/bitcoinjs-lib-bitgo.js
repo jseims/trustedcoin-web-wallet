@@ -6226,7 +6226,7 @@ Bitcoin.ECKey = (function () {
 
     var f = bytes.slice(0);  // creates a copy.
     var tx_ver = u32(f);
-    if (tx_ver != 1) {
+    if (tx_ver != 1 && tx_ver != 2) {
         return null;
     }
     var vin_sz = readVarInt(f);
