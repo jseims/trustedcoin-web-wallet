@@ -4624,6 +4624,13 @@ Bitcoin.ECDSA = (function () {
       } while (r.compareTo(BigInteger.ZERO) <= 0);
 
       var s = k.modInverse(n).multiply(e.add(d.multiply(r))).mod(n);
+      
+      var N_OVER_TWO = n.shiftRight(1)
+
+      // enforce low S values, see bip62: 'low s values in signatures'
+      if (s.compareTo(N_OVER_TWO) > 0) {
+          s = n.subtract(s);
+      }
 
       return ECDSA.serializeSig(r, s);
     },
@@ -6219,7 +6226,7 @@ Bitcoin.ECKey = (function () {
 
     var f = bytes.slice(0);  // creates a copy.
     var tx_ver = u32(f);
-    if (tx_ver != 1) {
+    if (tx_ver != 1 && tx_ver != 2) {
         return null;
     }
     var vin_sz = readVarInt(f);
